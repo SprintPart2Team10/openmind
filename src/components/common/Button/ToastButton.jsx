@@ -12,7 +12,7 @@ export default function ToastButton() {
   return (
     <div>
       <button type="button" onClick={handleButtonClick}>
-        <img src={linkIcon} alt="Link Icon" />
+        <img src={linkIcon} alt="토스트 아이콘" />
       </button>
 
       {toastMessage && <Toast pop={toastMessage} />}
