@@ -6,12 +6,13 @@ import { getElapsedTime } from '../../../utils/getElapsedTime';
 
 export default function Answer({
   editCheck,
-  showAnswerForm = true,
+  showAnswerForm,
   answer,
   textareaValue,
   handleTextareaChange,
-  textareaClassName,
+  handleAnswerEdit,
   handleAnswerCreate,
+  handleEditButtonClick,
 }) {
   console.log(`editCheck?>>>>>>>>>>>>>>>>>`);
   console.log(editCheck);
@@ -32,7 +33,7 @@ export default function Answer({
         {/* answer O -> 답변, X : form */}
         {answer ? (
           editCheck ? (
-            <>
+            <form onSubmit={handleAnswerEdit}>
               <textarea
                 className={styles.textarea}
                 name=''
@@ -43,10 +44,10 @@ export default function Answer({
                 onInput={handleTextareaChange}
                 value={textareaValue}
               ></textarea>
-              <ButtonBox className={textareaClassName} text={textareaValue} handleButtonClick={handleAnswerCreate}>
-                답변 완료
+              <ButtonBox className='darkButton' text={textareaValue}>
+                수정 완료
               </ButtonBox>
-            </>
+            </form>
           ) : isRejected ? (
             <p className={styles.reject}>답변 거절</p>
           ) : (
@@ -54,7 +55,7 @@ export default function Answer({
           )
         ) : (
           showAnswerForm && (
-            <>
+            <form onSubmit={handleAnswerCreate}>
               <textarea
                 className={styles.textarea}
                 name=''
@@ -65,10 +66,10 @@ export default function Answer({
                 onInput={handleTextareaChange}
                 value={textareaValue}
               ></textarea>
-              <ButtonBox className={textareaClassName} text={textareaValue} handleButtonClick={handleAnswerCreate}>
+              <ButtonBox className='darkButton' text={textareaValue}>
                 답변 완료
               </ButtonBox>
-            </>
+            </form>
           )
         )}
       </div>

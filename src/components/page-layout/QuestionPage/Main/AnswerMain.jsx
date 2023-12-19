@@ -10,13 +10,13 @@ import { useQuestionDelete } from '../../../../hooks/useQuestion.js';
 
 import styles from './AnswerMain.module.css';
 
-export default function AnswerMain({ questionId, answer }) {
+export default function AnswerMain({ editCheck, questionId, answer, setEditCheck }) {
   console.log(`AnswerMain>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`);
   console.log(questionId);
 
   const { id: subjectId } = useContext(SubjectDataContext);
 
-  const { answerId, content, createdAt, answerQuestionId, isRejected } = answer || {};
+  const { id: answerId, content, createdAt, answerQuestionId, isRejected } = answer || {};
   console.log(answer);
 
   // textarea 입력 값
@@ -26,23 +26,41 @@ export default function AnswerMain({ questionId, answer }) {
     setTextareaValue(e.target.value);
   };
 
-  // textarea 입력 시 버튼 클래스 변경
-  const [textareaClassName, setTextareaClassName] = useState('lightButton');
-  useEffect(() => {
-    setTextareaClassName('darkButton');
-  }, [textareaClassName]);
-
   // 전체 삭제 : api ?
   const handleDeleteButton = async () => {
     // api ?
   };
 
   // 답변하기 : 수정이후 삭제 된 리스트를 새로 보여주는 기능 추가 필요
-  const handleAnswerCreate = async () => {
+  const handleAnswerCreate = async (e) => {
+    console.log(questionId);
+    e.preventDefault();
+    setEditCheck(false);
     // 커스텀 훅으로 사용하고싶으나 405error발생 : 수정필요
     // await useAnswerCreate(`questions/${questionId}/`,  );
-    await axiosBaseURL.post(
-      `questions/${questionId}/answers/`,
+    // await axiosBaseURL.post(
+    //   `questions/${questionId}/answers/`,
+    //   {
+    //     content: textareaValue,
+    //     isRejected: false,
+    //   },
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // );
+  };
+
+  const handleAnswerEdit = async (e) => {
+    console.log('answerId>>>>>>>>>>>>>>');
+    console.log(answerId);
+    e.preventDefault();
+    setEditCheck(false);
+    // 커스텀 훅으로 사용하고싶으나 405error발생 : 수정필요
+    // await useAnswerCreate(`questions/${questionId}/`);
+    await axiosBaseURL.put(
+      `answers/${answerId}/`,
       {
         content: textareaValue,
         isRejected: false,
@@ -64,9 +82,10 @@ export default function AnswerMain({ questionId, answer }) {
           showAnswerForm={true}
           answer={answer}
           textareaValue={textareaValue}
-          textareaClassName={textareaClassName}
           handleTextareaChange={handleTextareaChange}
           handleDeleteButton={handleDeleteButton}
+          handleAnswerEdit={handleAnswerEdit}
+          editCheck={editCheck}
           handleAnswerCreate={handleAnswerCreate}
         />
       </main>
